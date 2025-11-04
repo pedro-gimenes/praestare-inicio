@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.praestare.emprestimos.mapper.UsuarioMapper;
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
+import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.model.dto.UsuarioDto;
 import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
@@ -73,17 +74,22 @@ public class UsuarioService {
     }
 
     public Usuario atualizarUsuario(Long id, UsuarioDto dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado."));
+    Usuario usuario = usuarioRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado."));
 
-        usuario.setName(dto.getName());
+    usuario.setName(dto.getName());
 
-        if (dto.getContatos() != null) {
-            List<Contato> contatosAtualizados = atualizarContatos(dto.getContatos(), usuario);
-            usuario.setContatos(contatosAtualizados);
-        }
+    if (dto.getContatos() != null) {
+        List<Contato> contatosAtualizados = atualizarContatos(dto.getContatos(), usuario);
+        usuario.setContatos(contatosAtualizados);
+    }
 
-        return usuarioRepository.save(usuario);
+    return usuarioRepository.save(usuario);
+}
+
+
+    private List<Contato> atualizarContatos(List<ContatoDto> contatos, Usuario usuario) {
+        throw new UnsupportedOperationException("Unimplemented method 'atualizarContatos'");
     }
 
     public void deletarUsuarioPorId(Long id) {
