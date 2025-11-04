@@ -13,6 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioDto {
+    
+    private Long id;
 
     @NotBlank(message = "Nome obrigatório")
     private String name;
@@ -25,6 +27,24 @@ public class UsuarioDto {
 
     @NotBlank(message = "Uso de senha obrigatório")
     private String password;
+
     private List<ContatoDto> contatos;
+
+    public UsuarioDto(List<ContatoDto> contatos) {
+        this.contatos = contatos;
+    }
+
+    public UsuarioDto(Long id,String name,
+            String cpf,
+            String email,
+            String password) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.password = password;
+    }
+
+    
 }
 

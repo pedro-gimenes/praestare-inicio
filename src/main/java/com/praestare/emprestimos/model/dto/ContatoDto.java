@@ -11,7 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContatoDto {
-    
+
+    private Long id;
+
     @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
     
@@ -19,6 +21,9 @@ public class ContatoDto {
     private String email;
 
     @NotBlank(message = "Obrigatório nome da instituição financeira")
-    private String Banco;
+    private String banco;
+    
     private Long usuarioId;
-    }
+}
+
+

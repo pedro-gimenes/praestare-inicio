@@ -1,20 +1,21 @@
 package com.praestare.emprestimos.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.praestare.emprestimos.repository.UsuarioRepository;
-
-
+import com.praestare.emprestimos.repository.LoginRepository;
 
 @Service
-public class AutenticacaoService implements UserDetailService {
+public class AutenticacaoService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private LoginRepository loginRepository;
 
     @Override
-    public UserDetails loadUserByUsername(Long id) throws UsernameNotFoundException {
-        return usuarioRepository.findById(id);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return loginRepository.findByLogin(username);
     }
 }

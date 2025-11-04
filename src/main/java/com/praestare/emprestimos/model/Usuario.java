@@ -14,16 +14,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "usuario")
 public class Usuario {
     
     @Id
@@ -34,6 +35,7 @@ public class Usuario {
     private String name;
 
     @Column(unique = true)
+    @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
     private String cpf;
 
     @Column(nullable = false)
@@ -47,6 +49,10 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Contato> contatos = new ArrayList<Contato>();
+    private List<Contato> contatos = new ArrayList<>();
+
+    public List<Contato> getContatos() {
+    return contatos;
+}
 
 }

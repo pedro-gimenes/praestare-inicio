@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.praestare.emprestimos.mapper.UsuarioMapper;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.model.dto.UsuarioDto;
@@ -49,7 +50,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDto dto) {
         Usuario usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
-        UsuarioResponseDto responseDto = usuarioService.toDTO(usuarioAtualizado);
+        UsuarioResponseDto responseDto = UsuarioMapper.toDTO(usuarioAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
