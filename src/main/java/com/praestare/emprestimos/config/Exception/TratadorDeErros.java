@@ -1,6 +1,7 @@
 package com.praestare.emprestimos.config.Exception;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,9 +20,12 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<DadosErroValidacao>> tratarErro400(MethodArgumentNotValidException ex){
+    public ResponseEntity<List<DadosErroValidacao>> tratarErro400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
+        var lista = erros.stream()
+            .map(DadosErroValidacao::new)
+            .collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(lista);
     }
 
     @ExceptionHandler(ValidacaoException.class)
@@ -29,7 +33,7 @@ public class TratadorDeErros {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    private record DadosErroValidacao(String campo, String menssagem) {
+    public static record DadosErroValidacao(String campo, String mensagem) {
         
         public DadosErroValidacao(FieldError error){
             this(error.getField(), error.getDefaultMessage());}

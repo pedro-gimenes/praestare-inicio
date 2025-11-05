@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.praestare.emprestimos.mapper.ContatoMapper;
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
+import com.praestare.emprestimos.model.dto.DadosErroValidacao;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 import com.praestare.emprestimos.service.ContatoService;
 
@@ -29,26 +31,29 @@ public class ContatoController {
     @Autowired
     private ContatoService contatoService;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody @Valid ContatoDto dto) {
+    public ResponseEntity<ContatoResponseDto> criar(@RequestBody @Valid ContatoDto dto) {
         try {
             Contato contato = contatoService.criarContato(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(contato);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ContatoMapper.toDTO(contato));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new DadosErroValidacao(e.getMessage()));
         }
     }
-        @PutMapping("/usuario/{usuarioId}")
-        public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable Long id,
-            @RequestBody @Valid List<ContatoDto> dtos) {
+    @PutMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable Long id,
+        @RequestBody @Valid List<ContatoDto> dtos) {
 
-            Usuario usuario = UsuarioRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
-            List<Contato> atualizados = contatoService.atualizarContatos(dtos, usuario);
-            List<ContatoResponseDto> response = ContatoMapper.toDTOList(atualizados);
-            return ResponseEntity.ok(response);
-        }
+        List<Contato> atualizados = contatoService.atualizarContatos(dtos, usuario);
+        List<ContatoResponseDto> response = ContatoMapper.toDTOList(atualizados);
+        return ResponseEntity.ok(response);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ContatoResponseDto> atualizar(@PathVariable Long id, @RequestBody @Valid ContatoDto dto) {
