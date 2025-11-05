@@ -1,51 +1,63 @@
 package com.praestare.emprestimos.controller;
 
-
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
-import com.praestare.emprestimos.repository.ContatoRepository;
+import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.repository.UsuarioRepository;
+import com.praestare.emprestimos.service.ContatoService;
 
 import jakarta.validation.Valid;
-
 
 @RestController
 @RequestMapping("/contatos")
 public class ContatoController {
-    
-    @Autowired
-    private ContatoRepository contatoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private ContatoService contatoService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> criar(@RequestBody @Valid ContatoDto dto) {
-        
-        Optional<Usuario> usuarioOpt = usuarioRepository.findById(dto.getUsuarioId());
-        if(usuarioOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente não encontrado");
+        try {
+            Contato contato = contatoService.criarContato(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(contato);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+        @PutMapping("/usuario/{usuarioId}")
+        public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable Long id,
+            @RequestBody @Valid List<ContatoDto> dtos) {
+
+            Usuario usuario = UsuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+            List<Contato> atualizados = contatoService.atualizarContatos(dtos, usuario);
+            List<ContatoResponseDto> response = ContatoMapper.toDTOList(atualizados);
+            return ResponseEntity.ok(response);
         }
 
-        Contato contato = new Contato();
-        contato.setTelefone(dto.getTelefone());
-        contato.setEmail(dto.getEmail());
-        contato.setBanco(dto.getBanco());
-        contato.setUsuario(usuarioOpt.get());
-        contatoRepository.save(contato);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(contato);
-    }
-    
+    @PutMapping("/{id}")
+    public ResponseEntity<ContatoResponseDto> atualizar(@PathVariable Long id, @RequestBody @Valid ContatoDto dto) {
+        Contato contatoAtualizado = contatoService.atualizarContato(id, dto);
+        ContatoResponseDto responseDto = ContatoMapper.toDTO(contatoAtualizado);
+        return ResponseEntity.ok(responseDto);
 }
+
+
+
+}
+

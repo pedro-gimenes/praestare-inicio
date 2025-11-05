@@ -49,10 +49,11 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDto dto) {
-        Usuario usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
+        Usuario usuarioAtualizado = UsuarioService.atualizarUsuario(id, dto);
         UsuarioResponseDto responseDto = UsuarioMapper.toDTO(usuarioAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-    }
+}
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable @Valid Long id) {

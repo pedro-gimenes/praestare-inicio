@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.praestare.emprestimos.mapper.UsuarioMapper;
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
-import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.model.dto.UsuarioDto;
 import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
@@ -86,11 +85,6 @@ public class UsuarioService {
 
     return usuarioRepository.save(usuario);
 }
-
-
-    private List<Contato> atualizarContatos(List<ContatoDto> contatos, Usuario usuario) {
-        throw new UnsupportedOperationException("Unimplemented method 'atualizarContatos'");
-    }
 
     public void deletarUsuarioPorId(Long id) {
         usuarioRepository.deleteById(id);
