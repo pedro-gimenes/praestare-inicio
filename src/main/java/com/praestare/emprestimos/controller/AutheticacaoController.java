@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.praestare.emprestimos.model.Usuario;
+import com.praestare.emprestimos.model.Login;
 import com.praestare.emprestimos.model.dto.DadosAutenticacao;
 import com.praestare.emprestimos.model.dto.DadosTokenJWT;
 import com.praestare.emprestimos.service.TokenService;
@@ -31,7 +31,7 @@ public class AutheticacaoController {
         
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.Login(), dados.password());
         var authentication = manager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        var tokenJWT = tokenService.gerarToken((Login) authentication.getPrincipal());
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 

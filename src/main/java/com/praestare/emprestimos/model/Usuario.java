@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "usuario")
+@Table(name = "usuario")
 public class Usuario {
     
     @Id
@@ -37,12 +39,6 @@ public class Usuario {
     @Column(unique = true)
     @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
     private String cpf;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(unique = true, nullable = false)
-    private String email;
 
     @Enumerated(EnumType.STRING)
     private UsuarioType usuarioType;

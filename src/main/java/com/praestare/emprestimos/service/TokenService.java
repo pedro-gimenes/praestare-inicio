@@ -11,7 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.praestare.emprestimos.model.Usuario;
+import com.praestare.emprestimos.model.Login;
 
 @Service
 public class TokenService {
@@ -19,12 +19,12 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
     
-    public String gerarToken(Usuario usuario) {
+    public String gerarToken(Login login) {
         try {
             var algoritimo = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("API Prestare.emp")
-                    .withSubject(usuario.getEmail())
+                    .withSubject(login.getLogin())
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritimo);
         } catch (JWTCreationException exception) {

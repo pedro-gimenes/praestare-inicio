@@ -19,23 +19,15 @@ import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class UsuarioService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ContatoService contatoService;
+    private ContatoService contatoService;
 
     public Usuario salvarUsuario(UsuarioDto dto) {
 
