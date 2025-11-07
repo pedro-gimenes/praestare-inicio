@@ -18,7 +18,6 @@ import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
-import com.praestare.emprestimos.model.dto.DadosErroValidacao;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 import com.praestare.emprestimos.service.ContatoService;
 
@@ -36,12 +35,9 @@ public class ContatoController {
 
     @PostMapping
     public ResponseEntity<ContatoResponseDto> criar(@RequestBody @Valid ContatoDto dto) {
-        try {
             Contato contato = contatoService.criarContato(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(ContatoMapper.toDTO(contato));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new DadosErroValidacao(e.getMessage()));
-        }
+
     }
     @PutMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable Long id,
