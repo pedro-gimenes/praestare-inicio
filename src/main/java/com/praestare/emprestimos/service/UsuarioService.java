@@ -69,7 +69,7 @@ public class UsuarioService {
     return Optional.ofNullable(usuario.getContatos())
         .orElse(Collections.emptyList())
         .stream()
-        .map(UsuarioMapper::toContatoDTO)
+        .map(ContatoMapper::toDTO)
         .collect(Collectors.toList());
 
     }

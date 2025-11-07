@@ -1,4 +1,4 @@
-package com.praestare.emprestimos.config.Exception;
+package com.praestare.emprestimos.config.exception;
 
 import java.util.List;
 import java.util.stream.Collectors;

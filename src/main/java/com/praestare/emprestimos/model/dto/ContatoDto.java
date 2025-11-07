@@ -23,6 +23,7 @@ public class ContatoDto {
     @NotBlank(message = "Obrigatório nome da instituição financeira")
     private String banco;
     
+    @NotBlank(message = "Obtigatório uso do UsuarioId")
     private Long usuarioId;
 }
 

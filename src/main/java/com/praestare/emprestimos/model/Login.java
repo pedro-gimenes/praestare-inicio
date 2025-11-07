@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "login")
+@Entity
 @Table(name = "login")
 @Getter
 @AllArgsConstructor

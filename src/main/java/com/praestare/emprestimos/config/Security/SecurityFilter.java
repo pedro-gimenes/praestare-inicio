@@ -1,8 +1,9 @@
-package com.praestare.emprestimos.config.Security;
+package com.praestare.emprestimos.config.security;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.praestare.emprestimos.repository.LoginRepository;
 import com.praestare.emprestimos.service.TokenService;
 
-import org.springframework.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

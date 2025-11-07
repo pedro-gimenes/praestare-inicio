@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "usuario")
+@Entity
 @Table(name = "usuario")
 public class Usuario {
     
@@ -33,6 +34,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome é obrigatório")
     @Column(nullable = false)
     private String name;
 
@@ -47,8 +49,6 @@ public class Usuario {
     @JsonManagedReference
     private List<Contato> contatos = new ArrayList<>();
 
-    public List<Contato> getContatos() {
-    return contatos;
 }
 
-}
+

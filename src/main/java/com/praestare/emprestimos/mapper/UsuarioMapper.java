@@ -19,6 +19,8 @@ import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
 public class UsuarioMapper {
 
     public static UsuarioResponseDto toDTO(Usuario usuario) {
+        if (usuario == null) return null;
+
         UsuarioResponseDto dto = new UsuarioResponseDto();
         dto.setId(usuario.getId());
         dto.setName(usuario.getName());
@@ -27,24 +29,10 @@ public class UsuarioMapper {
         List<ContatoResponseDto> contatos = Optional.ofNullable(usuario.getContatos())
             .orElse(Collections.emptyList())
             .stream()
-            .map(UsuarioMapper::toContatoDTO)
+            .map(contato -> ContatoMapper.toDTO(contato))
             .collect(Collectors.toList());
 
         dto.setContatos(contatos);
-        return dto;
-    }
-
-        public static ContatoResponseDto toContatoDTO(Contato contato) {
-        ContatoResponseDto dto = new ContatoResponseDto();
-        dto.setId(contato.getId());
-        dto.setTelefone(contato.getTelefone());
-        dto.setEmail(contato.getEmail());
-        dto.setBanco(contato.getBanco());
-
-        if (contato.getUsuario() != null) {
-            dto.setUsuarioId(contato.getUsuario().getId());
-        }
-
         return dto;
     }
 

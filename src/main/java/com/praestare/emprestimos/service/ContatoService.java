@@ -17,10 +17,12 @@ import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.repository.ContatoRepository;
 import com.praestare.emprestimos.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
+@RequiredArgsConstructor
 public class ContatoService {
     
     @Autowired
@@ -32,7 +34,7 @@ public class ContatoService {
 
     public Contato criarContato(ContatoDto dto) {
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-            .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado" + dto.getUsuarioId()));
+            .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado: " + dto.getUsuarioId()));
         Contato contato = ContatoMapper.toEntity(dto, usuario);
         return contatoRepository.save(contato);
     }

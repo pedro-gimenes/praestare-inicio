@@ -29,22 +29,6 @@ public class UsuarioDto {
     private String password;
 
     private List<ContatoDto> contatos;
-
-    public UsuarioDto(List<ContatoDto> contatos) {
-        this.contatos = contatos;
-    }
-
-    public UsuarioDto(Long id,String name,
-            String cpf,
-            String email,
-            String password) {
-        this.id = id;
-        this.name = name;
-        this.cpf = cpf;
-        this.email = email;
-        this.password = password;
-    }
-
     
 }
 

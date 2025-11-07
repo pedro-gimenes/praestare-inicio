@@ -4,14 +4,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
-
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 
-@Component
+
 public class ContatoMapper {
 
     public static ContatoResponseDto toDTO(Contato contato) {
@@ -26,12 +24,12 @@ public class ContatoMapper {
     }
 
     public static List<ContatoResponseDto> toDTOList(List<Contato> contatos) {
-    if (contatos == null) {
-        return Collections.emptyList();
-    }
-    return contatos.stream()
-        .map(ContatoMapper::toDTO)
-        .collect(Collectors.toList());
+        if (contatos == null) {
+            return Collections.emptyList();
+        }
+        return contatos.stream()
+            .map(ContatoMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     public static Contato toEntity(ContatoDto dto, Usuario usuario) {

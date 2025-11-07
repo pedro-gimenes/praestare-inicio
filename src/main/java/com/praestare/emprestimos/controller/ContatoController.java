@@ -2,7 +2,7 @@ package com.praestare.emprestimos.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,17 +20,17 @@ import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 import com.praestare.emprestimos.service.ContatoService;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/contatos")
+@RequiredArgsConstructor
 public class ContatoController {
 
-    @Autowired
+    
     private ContatoService contatoService;
-
-    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
@@ -40,10 +40,10 @@ public class ContatoController {
 
     }
     @PutMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable Long id,
+    public ResponseEntity<List<ContatoResponseDto>> atualizarPorUsuario(@PathVariable("usuarioId")Long usuarioId,
         @RequestBody @Valid List<ContatoDto> dtos) {
 
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
         List<Contato> atualizados = contatoService.atualizarContatos(dtos, usuario);

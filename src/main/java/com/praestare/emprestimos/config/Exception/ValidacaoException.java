@@ -1,4 +1,4 @@
-package com.praestare.emprestimos.config.Exception;
+package com.praestare.emprestimos.config.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
