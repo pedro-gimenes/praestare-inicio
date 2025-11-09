@@ -22,7 +22,9 @@ import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
 import com.praestare.emprestimos.service.UsuarioService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {

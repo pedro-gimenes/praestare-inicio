@@ -19,8 +19,10 @@ import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
     
     @Autowired

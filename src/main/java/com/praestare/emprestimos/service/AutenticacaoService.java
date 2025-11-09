@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.praestare.emprestimos.repository.LoginRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AutenticacaoService implements UserDetailsService {
 
     @Autowired

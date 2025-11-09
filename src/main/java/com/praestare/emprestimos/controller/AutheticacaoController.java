@@ -15,7 +15,9 @@ import com.praestare.emprestimos.model.dto.DadosTokenJWT;
 import com.praestare.emprestimos.service.TokenService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/login")
 public class AutheticacaoController {

@@ -4,12 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.praestare.emprestimos.model.Contato;
 import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 
-
+@Component
 public class ContatoMapper {
 
     public static ContatoResponseDto toDTO(Contato contato) {

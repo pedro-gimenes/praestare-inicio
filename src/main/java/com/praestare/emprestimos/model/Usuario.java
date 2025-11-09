@@ -49,6 +49,10 @@ public class Usuario {
     @JsonManagedReference
     private List<Contato> contatos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Denuncia> denuncias = new ArrayList<>();
+
 }
 
 
