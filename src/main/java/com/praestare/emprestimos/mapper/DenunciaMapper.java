@@ -53,5 +53,21 @@ public class DenunciaMapper {
         return dto;
     }
 
+    public static void updateEntity(Denuncia denuncia, DenunciaDto dto, Usuario usuario) {
+    denuncia.setBanco(dto.getBanco());
+    denuncia.setTaxa(dto.getTaxa());
+    denuncia.setValor(dto.getValor());
+    denuncia.setPrazo(dto.getPrazo());
+    denuncia.setAnonimo(dto.isAnonimo());
+    denuncia.setDescricao(dto.getDescricao());
+
+    if (!dto.isAnonimo()) {
+        denuncia.setUsuario(usuario);
+    } else {
+        denuncia.setUsuario(null);
+    }
+}
+
+
 }
 

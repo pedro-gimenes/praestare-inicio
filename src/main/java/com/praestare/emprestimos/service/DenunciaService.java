@@ -42,21 +42,37 @@ public class DenunciaService {
     }
 
     public List<DenunciaResponseDto> listarDenuncias() {
-    List<Denuncia> denuncias = denunciaRepository.findAll();
-    return denuncias.stream()
-        .map(DenunciaMapper::toResponseDto)
-        .collect(Collectors.toList());
+        List<Denuncia> denuncias = denunciaRepository.findAll();
+        return denuncias.stream()
+            .map(DenunciaMapper::toResponseDto)
+            .collect(Collectors.toList());
     }
 
     public List<DenunciaResponseDto> listarDenunciasPorUsuario(Long usuarioId) {
-    Usuario usuario = usuarioRepository.findById(usuarioId)
-        .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado: " + usuarioId));
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado: " + usuarioId));
 
-    List<Denuncia> denuncias = denunciaRepository.findByUsuarioId(usuario);
-
-    return denuncias.stream()
-        .map(DenunciaMapper::toResponseDto)
-        .collect(Collectors.toList());
+        List<Denuncia> denuncias = denunciaRepository.findByUsuarioId(usuario);
+        return denuncias.stream()
+            .map(DenunciaMapper::toResponseDto)
+            .collect(Collectors.toList());
     }
 
+    public Denuncia atualizarDenuncia(Long id, DenunciaDto dto) {
+        Denuncia denunciaExistente = denunciaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Denúncia com ID " + id + " não encontrada"));
+        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+            .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + dto.getUsuarioId() + " não encontrado"));
+
+        DenunciaMapper.updateEntity(denunciaExistente, dto, usuario);
+
+        return denunciaRepository.save(denunciaExistente);
+    }
+
+    public void deletarDenuncia(Long id){
+        if(!denunciaRepository.existsById(id)){
+            throw new EntityNotFoundException("Usuário com ID " + id + " não encontrado");
+        }
+        denunciaRepository.deleteById(id);
+    }
 }

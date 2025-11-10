@@ -17,9 +17,9 @@ import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.repository.ContatoRepository;
 import com.praestare.emprestimos.repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -78,6 +78,13 @@ public class ContatoService {
             .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         updateEntityFromDto(contato, dto, usuario);
         return contatoRepository.save(contato);
+    }
+
+    public void deletarContato(Long id){
+        if(!contatoRepository.existsById(id)){
+            throw new EntityNotFoundException("Usuário com ID " + id + " não encontrado");
+        }
+        contatoRepository.deleteById(id);
     }
 
 }

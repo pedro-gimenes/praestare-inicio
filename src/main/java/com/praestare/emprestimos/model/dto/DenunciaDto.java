@@ -28,7 +28,7 @@ public class DenunciaDto {
     @NotNull(message = "Definição é obrigatória")
     private boolean anonimo;
 
-    private String Descricao;
+    private String descricao;
 
     @NotBlank(message = "Obrigatório uso do UsuarioId")
     private Long usuarioId;

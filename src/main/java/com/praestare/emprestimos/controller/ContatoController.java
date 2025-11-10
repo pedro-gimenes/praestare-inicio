@@ -2,9 +2,9 @@ package com.praestare.emprestimos.controller;
 
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,9 +20,9 @@ import com.praestare.emprestimos.model.dto.ContatoDto;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 import com.praestare.emprestimos.service.ContatoService;
-import lombok.RequiredArgsConstructor;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/contatos")
@@ -56,7 +56,13 @@ public class ContatoController {
         Contato contatoAtualizado = contatoService.atualizarContato(id, dto);
         ContatoResponseDto responseDto = ContatoMapper.toDTO(contatoAtualizado);
         return ResponseEntity.ok(responseDto);
-}
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable  @Valid Long id) {
+        contatoService.deletarContato(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 
