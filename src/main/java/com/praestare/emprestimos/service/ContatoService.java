@@ -1,14 +1,9 @@
 package com.praestare.emprestimos.service;
 
-import static com.praestare.emprestimos.mapper.ContatoMapper.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.praestare.emprestimos.mapper.ContatoMapper;
@@ -38,46 +33,21 @@ public class ContatoService {
         Contato contato = ContatoMapper.toEntity(dto, usuario);
         return contatoRepository.save(contato);
     }
-
-    public List<Contato> atualizarContatos(List<ContatoDto> contatos, Usuario usuario) {
-
-        List<Contato> atuais = Optional.ofNullable(usuario.getContatos()).orElseGet(ArrayList::new);
-
-        Map<Long, Contato> atuaisById = atuais.stream()
-            .filter(c -> c.getId() != null)
-            .collect(Collectors.toMap(Contato::getId, c -> c));
-
-        List<Contato> result = new ArrayList<>();
-
-        for (ContatoDto dto : Optional.ofNullable(contatos).orElseGet(ArrayList::new)) {
-            if (dto.getId() != null && atuaisById.containsKey(dto.getId())) {
-                Contato existente = atuaisById.get(dto.getId());
-                ContatoMapper.updateEntityFromDto(existente, dto, usuario);
-                result.add(existente);
-                atuaisById.remove(dto.getId());
-            } else {
-                Contato novo = ContatoMapper.toEntity(dto, usuario);
-                result.add(novo);
-            }
-        }
-
-        if (!atuaisById.isEmpty()) {
-            contatoRepository.deleteAll(atuaisById.values());
-        }
-
-        List<Contato> salvos = contatoRepository.saveAll(result);
-        usuario.setContatos(new ArrayList<>(salvos));
-
-        return salvos;
-    }
-
     public Contato atualizarContato(Long id, ContatoDto dto) {
         Contato contato = contatoRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Contato não encontrado"));
+            .orElseThrow(() -> new EntityNotFoundException("Contato com ID " + id + " não encontrado"));
+
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-            .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
-        updateEntityFromDto(contato, dto, usuario);
+            .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + dto.getUsuarioId() + " não encontrado"));
+
+        ContatoMapper.updateEntityFromDto(contato, dto, usuario);
         return contatoRepository.save(contato);
+    }
+
+    public Page<Contato> listarContatos(Long usuarioId, Pageable pageable) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado: " + usuarioId));
+        return contatoRepository.findByUsuario(usuario, pageable);
     }
 
     public void deletarContato(Long id){

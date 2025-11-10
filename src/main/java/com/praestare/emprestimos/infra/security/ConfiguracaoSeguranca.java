@@ -1,4 +1,4 @@
-package com.praestare.emprestimos.config.security;
+package com.praestare.emprestimos.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

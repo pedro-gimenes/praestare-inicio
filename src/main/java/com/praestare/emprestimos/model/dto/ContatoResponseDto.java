@@ -1,5 +1,7 @@
 package com.praestare.emprestimos.model.dto;
 
+import org.springframework.data.domain.Page;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +20,7 @@ public class ContatoResponseDto {
     private String email;
     private String banco;
     private Long usuarioId;
+
+    private Page<ContatoResponseDto> contatos;
+
 }

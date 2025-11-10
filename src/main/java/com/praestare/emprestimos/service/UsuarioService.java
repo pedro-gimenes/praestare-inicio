@@ -1,12 +1,13 @@
 package com.praestare.emprestimos.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.praestare.emprestimos.mapper.ContatoMapper;
@@ -16,6 +17,7 @@ import com.praestare.emprestimos.model.Usuario;
 import com.praestare.emprestimos.model.dto.ContatoResponseDto;
 import com.praestare.emprestimos.model.dto.UsuarioDto;
 import com.praestare.emprestimos.model.dto.UsuarioResponseDto;
+import com.praestare.emprestimos.repository.ContatoRepository;
 import com.praestare.emprestimos.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +31,15 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private ContatoRepository contatoRepository;
+
+    @Autowired
     private ContatoService contatoService;
+
+    public Page<UsuarioResponseDto> listarTodos(Pageable pageable) {
+        Page<Usuario> usuarios = usuarioRepository.findAll(pageable);
+        return usuarios.map(UsuarioMapper::toDTO);
+    }
 
     public Usuario salvarUsuario(UsuarioDto dto) {
 
@@ -52,36 +62,21 @@ public class UsuarioService {
         }
     }
 
-    public List<UsuarioResponseDto> listarTodos() {
+    public Page<ContatoResponseDto> listarContatosPorUsuario(Long id, Pageable pageable) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado"));
 
-    List<Usuario> usuarios = usuarioRepository.findAll();
-
-    if (usuarios == null || usuarios.isEmpty()) {
-        throw new EntityNotFoundException("Nenhum usuário encontrado");
-    }
-    return usuarioRepository.findAll().stream()
-        .map(UsuarioMapper::toDTO)
-        .collect(Collectors.toList());
+        Page<Contato> contatos = contatoRepository.findByUsuario(usuario, pageable);
+        return contatos.map(ContatoMapper::toResponseDto);
     }
 
-    public List<ContatoResponseDto> listarContatosPorUsuario(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + usuarioId + " não encontrado."));
-
-    return Optional.ofNullable(usuario.getContatos())
-        .orElse(Collections.emptyList())
-        .stream()
-        .map(ContatoMapper::toDTO)
-        .collect(Collectors.toList());
-
-    }
 
     public Usuario atualizarUsuario(Long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado."));
 
         if (dto.getContatos() != null) {
-            List<Contato> contatosAtualizados = contatoService.atualizarContatos(dto.getContatos(), usuario);
+            List<Contato> contatosAtualizados = contatoService.atualizarContato(dto.getContatos(), usuario);
             usuario.setContatos(contatosAtualizados);
         }
         return usuarioRepository.save(usuario);

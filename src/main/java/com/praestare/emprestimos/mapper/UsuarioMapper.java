@@ -1,10 +1,11 @@
 package com.praestare.emprestimos.mapper;
 
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import com.praestare.emprestimos.model.Contato;
@@ -26,13 +27,13 @@ public class UsuarioMapper {
         dto.setName(usuario.getName());
         dto.setCpf(usuario.getCpf());
 
-        List<ContatoResponseDto> contatos = Optional.ofNullable(usuario.getContatos())
-            .orElse(Collections.emptyList())
-            .stream()
-            .map(contato -> ContatoMapper.toDTO(contato))
-            .collect(Collectors.toList());
+        List<ContatoResponseDto> contatosDtoList = contatos.stream()
+        .map(ContatoMapper::toResponseDto)
+        .collect(Collectors.toList());
 
-        dto.setContatos(contatos);
+        Page<ContatoResponseDto> contatosDtoPage = new PageImpl<>(contatosDtoList);
+        dto.setContatos(contatosDtoPage);
+
         return dto;
     }
 

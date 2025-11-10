@@ -1,9 +1,5 @@
 package com.praestare.emprestimos.mapper;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.praestare.emprestimos.model.Contato;
@@ -24,15 +20,16 @@ public class ContatoMapper {
         dto.setUsuarioId(contato.getUsuario() != null ? contato.getUsuario().getId() : null);
         return dto;
     }
-
-    public static List<ContatoResponseDto> toDTOList(List<Contato> contatos) {
-        if (contatos == null) {
-            return Collections.emptyList();
-        }
-        return contatos.stream()
-            .map(ContatoMapper::toDTO)
-            .collect(Collectors.toList());
+    public static ContatoResponseDto toResponseDto(Contato contato) {
+        ContatoResponseDto dto = new ContatoResponseDto();
+        dto.setId(contato.getId());
+        dto.setTelefone(contato.getTelefone());
+        dto.setEmail(contato.getEmail());
+        dto.setBanco(contato.getBanco());
+        dto.setUsuarioId(contato.getUsuario() != null ? contato.getUsuario().getId() : null);
+        return dto;
     }
+
 
     public static Contato toEntity(ContatoDto dto, Usuario usuario) {
         if (dto == null) return null;

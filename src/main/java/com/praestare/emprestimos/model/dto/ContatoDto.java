@@ -1,5 +1,7 @@
 package com.praestare.emprestimos.model.dto;
 
+import org.springframework.data.domain.Page;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,9 @@ public class ContatoDto {
     
     @NotBlank(message = "Obrigatório uso do UsuarioId")
     private Long usuarioId;
+
+    private Page<ContatoDto> contatos;
+
 }
 
 
